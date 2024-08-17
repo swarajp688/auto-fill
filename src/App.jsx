@@ -34,6 +34,14 @@ function App() {
     setInputIds({...inputIds, [e.target.id]: e.target.value});
     localStorage.setItem('inputIds', JSON.stringify({...inputIds, [e.target.id]: e.target.value}));
   }
+  const handleAutoFill = () => {
+    Object.keys(inputIds).forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.value = inputIds[id];
+      }
+    });
+  }
   return (
     <>
       <form onSubmit={handleSubmit} className="input-form">
@@ -47,6 +55,13 @@ function App() {
         </div>
         <button type="submit">Add Input</button>
       </form>
+      <div>
+        <button onClick={() => {
+            localStorage.removeItem('inputIds');
+            setInputIds({});
+          }}>Clear All</button>
+        <button onClick={handleAutoFill}>Autofill</button>
+      </div>
       <div className="filed-list">
         {Object.keys(inputIds).map((id) => (
           <div key={id} className="field-item">
