@@ -55,7 +55,7 @@ function App() {
         </div>
         <button type="submit">Add Input</button>
       </form>
-      <div>
+      <div className="util-buttons">
         <button onClick={() => {
             localStorage.removeItem('inputIds');
             setInputIds({});
