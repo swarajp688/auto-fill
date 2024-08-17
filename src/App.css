@@ -1,7 +1,6 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -39,4 +38,30 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.input-form {
+  width: 100%;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+.input-field {
+  display: flex;
+  justify-content: space-between;
+}
+.field-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  p {
+    margin: 0;
+  }
+}
+.filed-list {
+  display: flex;
+  flex-direction: column;
 }

@@ -1,33 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputIds, setInputIds] = useState({});
+  const [elId, setElId] = useState('');
+  const [elValue, setElValue] = useState('');
 
+  useEffect(() => {
+    try {
+      const ids = JSON.parse(localStorage.getItem('inputIds'));
+      console.log(ids);
+      if (Object.keys(ids).length) {
+        setInputIds(ids);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(elId && elValue){
+      setInputIds({...inputIds, [elId]: elValue});
+      localStorage.setItem('inputIds', JSON.stringify({...inputIds, [elId]: elValue}));
+      setElId('');
+      setElValue('');
+    } else {
+      alert('Please fill the form');
+    }
+  }
+
+  const handleFieldChange = (e) => {
+    setInputIds({...inputIds, [e.target.id]: e.target.value});
+    localStorage.setItem('inputIds', JSON.stringify({...inputIds, [e.target.id]: e.target.value}));
+  }
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <form onSubmit={handleSubmit} className="input-form">
+        <div className="input-field">
+          <label htmlFor="el-id">Element ID</label>
+          <input name="el-id" value={elId} onChange={(e) => setElId(e.target.value)} required/>
+        </div>
+        <div className="input-field">
+          <label htmlFor="el-value">Element Value</label>
+          <input name="el-value" value={elValue} onChange={(e) => setElValue(e.target.value)} required/>
+        </div>
+        <button type="submit">Add Input</button>
+      </form>
+      <div className="filed-list">
+        {Object.keys(inputIds).map((id) => (
+          <div key={id} className="field-item">
+            <p>{id}</p>
+            <input id={id} defaultValue={inputIds[id]} value={inputIds[id]} onChange={handleFieldChange} />
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
     </>
   )
 }
